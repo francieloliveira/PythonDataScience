@@ -1,0 +1,46 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+import zipfile
+os.environ['NLTK_DATA'] = os.getcwd() + "/nltk_data"
+from nltk.corpus import gutenberg
+from nltk.text import Text
+import nltk
+
+
+#
+# Complete the 'findWordFreq' function below.
+#
+# 
+from nltk.probability import FreqDist
+
+
+def findWordFreq(text, word):
+    # Filter out non-alphabetic tokens and create a frequency distribution
+    textfreq = FreqDist(token for token in text if token.isalpha())
+    
+    # Find the frequency of the given word
+    wordfreq = textfreq[word]
+    
+    # Find the word with the maximum frequency
+    maxfreq = max(textfreq, key=textfreq.get)
+    
+    return wordfreq, maxfreq
+
+if __name__ == '__main__':
+    text = input()
+    word = input()
+    if not os.path.exists(os.getcwd() + "/nltk_data"):
+        with zipfile.ZipFile("nltk_data.zip", 'r') as zip_ref:
+            zip_ref.extractall(os.getcwd())
+
+    text = Text(gutenberg.words(text))
+
+    word_freq, max_freq = findWordFreq(text, word)
+
+    print(word_freq)
+    print(max_freq)

@@ -1,0 +1,34 @@
+import os
+import zipfile
+from nltk.corpus import gutenberg
+from nltk.text import Text
+
+def calculateWordCounts(text):
+    # Conta o número total de palavras no texto
+    n_words = len(text)
+    
+    # Conta o número de palavras únicas no texto
+    n_unique_words = len(set(text))
+    
+    # Calcula a cobertura de palavras como um valor inteiro
+    word_coverage = n_words // n_unique_words
+
+    # Imprime os resultados
+    print(n_words)
+    print(n_unique_words)
+    print(word_coverage)
+
+if __name__ == '__main__':
+    # Recebe o nome do texto como entrada
+    text_name = input()
+    
+    # Verifica se o corpus nltk_data já foi extraído
+    if not os.path.exists(os.getcwd()+"/nltk_data"):
+        with zipfile.ZipFile("nltk_data.zip", 'r') as zip_ref:
+            zip_ref.extractall(os.getcwd())
+    
+    # Carrega o texto com base no nome fornecido
+    text = Text(gutenberg.words(text_name))
+    
+    # Chama a função para calcular e imprimir os resultados
+    calculateWordCounts(text)
